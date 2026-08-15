@@ -3,6 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
+import { useLenis } from 'lenis/react'
 import { CalendarIcon, KeyRoundIcon, UserRoundIcon } from 'lucide-react'
 import { useRef } from 'react'
 
@@ -22,6 +23,12 @@ function HomePage() {
 	const section3TitleRef = useRef<HTMLHeadingElement>(null)
 	const section4TitleRef = useRef<HTMLHeadingElement>(null)
 	const section5TitleRef = useRef<HTMLHeadingElement>(null)
+	const lenis = useLenis()
+
+	function scrollToTop() {
+		if (lenis) lenis.scrollTo(0)
+		else window.scrollTo({ top: 0, behavior: 'smooth' })
+	}
 
 	useGSAP(
 		() => {
@@ -178,7 +185,7 @@ function HomePage() {
 								Residencial Casablanca
 							</h1>
 							<p className="text-center">Clínica e creche para idosos</p>
-							<Button variant="outline" className="group relative">
+							<Button variant="outline" className="group relative" onClick={scrollToTop}>
 								Voltar ao topo
 							</Button>
 						</div>
