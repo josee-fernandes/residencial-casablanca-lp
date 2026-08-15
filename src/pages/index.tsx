@@ -66,9 +66,9 @@ function HomePage() {
 							{
 								opacity: 1,
 								y: 0,
-								duration: 0.3,
+								duration: 0.45,
 								ease: 'expo.out',
-								stagger: 0.01,
+								stagger: 0.015,
 								scrollTrigger: {
 									trigger: title,
 									start: 'top 80%',
@@ -92,9 +92,9 @@ function HomePage() {
 							{ yPercent: 110 },
 							{
 								yPercent: 0,
-								duration: 0.6,
+								duration: 0.85,
 								ease: 'expo.out',
-								stagger: 0.08,
+								stagger: 0.11,
 								scrollTrigger: {
 									trigger: paragraph,
 									start: 'top 85%',
@@ -118,8 +118,8 @@ function HomePage() {
 							{
 								opacity: 1,
 								ease: 'none',
-								duration: 0.6,
-								stagger: { amount: 3 },
+								duration: 0.85,
+								stagger: { amount: 4 },
 								scrollTrigger: {
 									trigger: group,
 									start: 'top 90%',
@@ -141,9 +141,9 @@ function HomePage() {
 						opacity: 1,
 						y: 0,
 						scale: 1,
-						duration: 0.6,
+						duration: 0.85,
 						ease: 'expo.out',
-						stagger: 0.12,
+						stagger: 0.16,
 						scrollTrigger: {
 							trigger: group,
 							start: 'top 85%',
@@ -162,7 +162,7 @@ function HomePage() {
 					{
 						opacity: 1,
 						xPercent: 0,
-						duration: 0.8,
+						duration: 1.1,
 						ease: 'expo.out',
 						scrollTrigger: {
 							trigger: element,
@@ -272,14 +272,14 @@ function HomePage() {
 
 						<div data-animate="fill" className="mt-6 flex flex-col gap-4 text-foreground">
 							<div>
-								<h3 className="font-black text-2xl uppercase">Enfermagem / cuidadoras</h3>
-								<p className="font-black text-lg uppercase">
+								<h3 className="font-semibold text-2xl uppercase">Enfermagem / cuidadoras</h3>
+								<p className="text-lg uppercase">
 									Agenda do dia, dose e horário — sem depender de planilha ou memória na troca de plantão.
 								</p>
 							</div>
 							<div>
-								<h3 className="font-black text-2xl uppercase">Coordenação / administração</h3>
-								<p className="font-black text-lg uppercase">
+								<h3 className="font-semibold text-2xl uppercase">Coordenação / administração</h3>
+								<p className="text-lg uppercase">
 									Visão de pacientes, responsáveis e quem tem permissão para ver ou alterar.
 								</p>
 							</div>
