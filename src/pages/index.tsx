@@ -20,21 +20,47 @@ import tableLight from '@/assets/table-light.jpg'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText)
 
+/**
+ * Marcadores de debug por ScrollTrigger, agrupados pela seção onde ficam.
+ *
+ * Ligue o mínimo possível por vez: os marcadores `scroller-*` são fixos na
+ * viewport, então triggers que compartilham o mesmo ponto de start empilham
+ * os rótulos no mesmo pixel e ficam ilegíveis.
+ */
+const enabledDebugMarkers: Record<string, boolean> = {
+	// Seção 1 — Medicação sob controle
+	'title-1': false,
+	'copy-1': false,
+
+	// Seção 2 — Quando a medicação depende de memória
+	'title-2': false,
+	'copy-2': false,
+	'slide-in-right-1': false,
+
+	// Seção 3 — Uma operação de medicação completa
+	'title-3': false,
+	'cards-1': false,
+
+	// Seção 4 — Feito para quem administra medicação
+	'title-4': false,
+	'fill-1': false,
+
+	// Seção 5 — Residencial Casablanca
+	'title-5': false,
+	'copy-3': false,
+}
+
+function debugMarkers(id: string) {
+	if (!enabledDebugMarkers[id]) return false
+
+	return { startColor: 'lime', endColor: 'red', fontSize: '14px', fontWeight: 'bold', indent: 20 }
+}
+
 export const Route = createFileRoute('/')({
 	component: HomePage,
 })
 
 function HomePage() {
-	// ScrollTrigger.defaults({
-	// 	markers: {
-	// 		startColor: 'lime',
-	// 		endColor: 'red',
-	// 		fontSize: '14px',
-	// 		fontWeight: 'bold',
-	// 		indent: 20,
-	// 	},
-	// })
-
 	const { theme } = useTheme()
 
 	const containerRef = useRef<HTMLDivElement>(null)
@@ -64,8 +90,10 @@ function HomePage() {
 				section5TitleRef.current,
 			].filter((title) => title !== null)
 
-			const titleSplits = titles.map((title) =>
-				SplitText.create(title, {
+			const titleSplits = titles.map((title, index) => {
+				const id = `title-${index + 1}`
+
+				return SplitText.create(title, {
 					type: 'chars',
 					smartWrap: true,
 					autoSplit: true,
@@ -83,16 +111,20 @@ function HomePage() {
 									trigger: title,
 									start: 'top 80%',
 									toggleActions: 'restart none restart reverse',
+									id,
+									markers: debugMarkers(id),
 								},
 							},
 						),
-				}),
-			)
+				})
+			})
 
 			const paragraphs = gsap.utils.toArray<HTMLParagraphElement>('[data-animate="copy"]', container)
 
-			const paragraphSplits = paragraphs.map((paragraph) =>
-				SplitText.create(paragraph, {
+			const paragraphSplits = paragraphs.map((paragraph, index) => {
+				const id = `copy-${index + 1}`
+
+				return SplitText.create(paragraph, {
 					type: 'lines',
 					mask: 'lines',
 					autoSplit: true,
@@ -109,16 +141,20 @@ function HomePage() {
 									trigger: paragraph,
 									start: 'top 85%',
 									toggleActions: 'restart none restart reverse',
+									id,
+									markers: debugMarkers(id),
 								},
 							},
 						),
-				}),
-			)
+				})
+			})
 
 			const fillGroups = gsap.utils.toArray<HTMLDivElement>('[data-animate="fill"]', container)
 
-			const fillSplits = fillGroups.map((group) =>
-				SplitText.create(group, {
+			const fillSplits = fillGroups.map((group, index) => {
+				const id = `fill-${index + 1}`
+
+				return SplitText.create(group, {
 					type: 'words',
 					autoSplit: true,
 					onSplit: (self) =>
@@ -132,18 +168,22 @@ function HomePage() {
 								stagger: { amount: 4 },
 								scrollTrigger: {
 									trigger: group,
-									start: 'top 90%',
-									end: 'bottom 70%',
+									start: 'top 50%',
+									end: 'bottom 50%',
 									scrub: true,
+									id,
+									markers: debugMarkers(id),
 								},
 							},
 						),
-				}),
-			)
+				})
+			})
 
 			const cardGroups = gsap.utils.toArray<HTMLDivElement>('[data-animate="cards"]', container)
 
-			for (const group of cardGroups) {
+			cardGroups.forEach((group, index) => {
+				const id = `cards-${index + 1}`
+
 				gsap.fromTo(
 					group.children,
 					{ opacity: 0, y: 40, scale: 0.96 },
@@ -158,14 +198,18 @@ function HomePage() {
 							trigger: group,
 							start: 'top 85%',
 							toggleActions: 'restart none restart reverse',
+							id,
+							markers: debugMarkers(id),
 						},
 					},
 				)
-			}
+			})
 
 			const slideInRightElements = gsap.utils.toArray<HTMLElement>('[data-animate="slide-in-right"]', container)
 
-			for (const element of slideInRightElements) {
+			slideInRightElements.forEach((element, index) => {
+				const id = `slide-in-right-${index + 1}`
+
 				gsap.fromTo(
 					element,
 					{ opacity: 0, xPercent: 60 },
@@ -178,10 +222,12 @@ function HomePage() {
 							trigger: element,
 							start: 'top 85%',
 							toggleActions: 'restart none restart reverse',
+							id,
+							markers: debugMarkers(id),
 						},
 					},
 				)
-			}
+			})
 
 			return () => {
 				for (const split of [...titleSplits, ...paragraphSplits, ...fillSplits]) split.revert()
