@@ -1,77 +1,54 @@
-# React + TypeScript + Vite
+# Residencial Casablanca — Landing Page
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Landing page do Residencial Casablanca (clínica e creche para idosos), com foco em controle de medicação: cadastro de pacientes, responsáveis, prescrições, agendas de administração e painel para a equipe.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 19** + **TypeScript** + **Vite 8**
+- **TanStack Router** (rotas baseadas em arquivos em `src/pages`)
+- **Tailwind CSS 4** + **shadcn/ui**
+- **GSAP** (ScrollTrigger, SplitText) + **Lenis** (scroll suave)
+- **Biome** (lint)
+- **React Compiler**
 
-## React Compiler
+Gerenciador de pacotes: **pnpm**
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Pré-requisitos
 
-Note: This will impact Vite dev & build performances.
+- Node.js 20+
+- [pnpm](https://pnpm.io/)
 
-## Expanding the ESLint configuration
+## Começando
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+pnpm install
+pnpm dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+A aplicação sobe em `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Scripts
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Comando         | Descrição                          |
+| --------------- | ---------------------------------- |
+| `pnpm dev`      | Servidor de desenvolvimento (HMR)  |
+| `pnpm build`    | Typecheck + build de produção      |
+| `pnpm preview`  | Preview do build local             |
+| `pnpm lint`     | Lint com Biome                     |
+
+## Estrutura
 
 ```
+src/
+  pages/          # Rotas (TanStack Router)
+  components/     # UI e providers (tema, shadcn)
+  styles/         # CSS global / tokens
+  lib/            # Utilitários
+  app.tsx         # Router + Lenis + ThemeProvider
+  main.tsx        # Entry point
+```
+
+## Observações
+
+- O tema padrão é escuro (`ThemeProvider`), com toggle na navegação.
+- A árvore de rotas gerada fica em `src/route-tree.gen.ts` (não editar à mão).
