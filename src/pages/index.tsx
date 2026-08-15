@@ -10,6 +10,10 @@ import { useRef } from 'react'
 import { useTheme } from '@/components/theme-provider'
 import { ThemeToggler } from '@/components/theme-toggler'
 import { Button } from '@/components/ui/button'
+import { DotPattern } from '@/components/ui/dot-pattern'
+import { LightRays } from '@/components/ui/light-rays'
+import { NoiseTexture } from '@/components/ui/noise-texture'
+import { cn } from '@/lib/utils'
 
 import tableDark from '@/assets/table-dark.jpg'
 import tableLight from '@/assets/table-light.jpg'
@@ -132,10 +136,11 @@ function HomePage() {
 
 	return (
 		<div ref={containerRef} className="overflow-x-hidden">
-			<section className="w-screen h-screen">
+			<section className="relative w-screen h-screen overflow-hidden">
 				<nav className="absolute top-0 left-0 w-full h-10 flex items-center justify-end px-4">
 					<ThemeToggler />
 				</nav>
+				<LightRays />
 				<div className="px-4 max-w-300 mx-auto h-full flex items-center justify-center">
 					<div className="flex flex-col gap-4 max-w-150">
 						<h1 ref={section1TitleRef} className="font-bold text-2xl xl:text-4xl text-center wrap-break-word">
@@ -151,7 +156,8 @@ function HomePage() {
 				</div>
 			</section>
 
-			<section className="w-screen h-screen">
+			<section className="relative w-screen h-screen overflow-hidden">
+				<NoiseTexture noiseOpacity={0.15} />
 				<div className="px-4 max-w-300 mx-auto h-full flex flex-col md:flex-row items-center md:justify-between gap-4">
 					<div className="flex flex-col gap-4 max-w-150">
 						<h1 ref={section2TitleRef} className="font-bold text-2xl xl:text-4xl wrap-break-word">
@@ -171,7 +177,8 @@ function HomePage() {
 				</div>
 			</section>
 
-			<section className="w-screen h-screen">
+			<section className="relative w-screen h-screen overflow-hidden">
+				<DotPattern className={cn('[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]')} />
 				<div className="px-4 max-w-300 mx-auto h-full flex items-center ">
 					<div className="flex flex-col gap-4 items-center justify-center">
 						<div className="flex flex-col gap-4 max-w-150 items-center justify-center">
@@ -207,7 +214,7 @@ function HomePage() {
 				</div>
 			</section>
 
-			<section className="w-screen h-screen">
+			<section className="relative w-screen h-screen overflow-hidden">
 				<div className="px-4 max-w-300 mx-auto h-full flex items-center">
 					<div className="flex flex-col gap-4">
 						<div className="flex flex-col gap-4 max-w-150">
@@ -216,23 +223,17 @@ function HomePage() {
 							</h1>
 						</div>
 
-						<div data-animate="cards" className="flex gap-4">
-							<div className="border bg-card p-4 rounded-lg">
-								<h3 className="font-semibold text-lg">Pacientes e responsáveis</h3>
-								<p className="mt-2 text-sm">
-									Cadastro com documento, admissão e vínculo familiar/legal — quem cuida de quem fica explícito.
+						<div className="mt-6 flex flex-col gap-4">
+							<div>
+								<h3 className="font-black text-2xl uppercase">Enfermagem / cuidadoras</h3>
+								<p className="font-black text-lg uppercase">
+									Agenda do dia, dose e horário — sem depender de planilha ou memória na troca de plantão.
 								</p>
 							</div>
-							<div className="border bg-card p-4 rounded-lg">
-								<h3 className="font-semibold text-lg">Prescrições e agendas</h3>
-								<p className="mt-2 text-sm">
-									Medicamento, período de vigência, instruções e horários por dia da semana, com quantidade definida.
-								</p>
-							</div>
-							<div className="border bg-card p-4 rounded-lg">
-								<h3 className="font-semibold text-lg">Equipe com papéis e permissões</h3>
-								<p className="mt-2 text-sm">
-									Enfermagem, farmácia e admin veem e fazem só o que cabe a cada perfil — no painel e na API.
+							<div>
+								<h3 className="font-black text-2xl uppercase">Coordenação / administração</h3>
+								<p className="font-black text-lg uppercase">
+									Visão de pacientes, responsáveis e quem tem permissão para ver ou alterar.
 								</p>
 							</div>
 						</div>
@@ -240,7 +241,8 @@ function HomePage() {
 				</div>
 			</section>
 
-			<section className="w-screen h-screen">
+			<section className="relative w-screen h-screen overflow-hidden">
+				<LightRays />
 				<div className="px-4 max-w-300 mx-auto h-full flex items-center justify-center">
 					<div className="flex flex-col gap-4">
 						<div className="flex flex-col gap-4 max-w-150">
