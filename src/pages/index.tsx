@@ -153,6 +153,26 @@ function HomePage() {
 				)
 			}
 
+			const slideInRightElements = gsap.utils.toArray<HTMLElement>('[data-animate="slide-in-right"]', container)
+
+			for (const element of slideInRightElements) {
+				gsap.fromTo(
+					element,
+					{ opacity: 0, xPercent: 60 },
+					{
+						opacity: 1,
+						xPercent: 0,
+						duration: 0.8,
+						ease: 'expo.out',
+						scrollTrigger: {
+							trigger: element,
+							start: 'top 85%',
+							toggleActions: 'restart none restart reverse',
+						},
+					},
+				)
+			}
+
 			return () => {
 				for (const split of [...titleSplits, ...paragraphSplits, ...fillSplits]) split.revert()
 			}
@@ -196,6 +216,7 @@ function HomePage() {
 					</div>
 
 					<img
+						data-animate="slide-in-right"
 						src={theme === 'dark' ? tableDark : tableLight}
 						alt="Table Preview"
 						className="rounded-lg max-w-130 w-full"
