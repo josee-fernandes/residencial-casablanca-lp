@@ -105,6 +105,32 @@ function HomePage() {
 				}),
 			)
 
+			const fillGroups = gsap.utils.toArray<HTMLDivElement>('[data-animate="fill"]', container)
+
+			const fillSplits = fillGroups.map((group) =>
+				SplitText.create(group, {
+					type: 'words',
+					autoSplit: true,
+					onSplit: (self) =>
+						gsap.fromTo(
+							self.words,
+							{ opacity: 0.15 },
+							{
+								opacity: 1,
+								ease: 'none',
+								duration: 0.6,
+								stagger: { amount: 3 },
+								scrollTrigger: {
+									trigger: group,
+									start: 'top 90%',
+									end: 'bottom 70%',
+									scrub: true,
+								},
+							},
+						),
+				}),
+			)
+
 			const cardGroups = gsap.utils.toArray<HTMLDivElement>('[data-animate="cards"]', container)
 
 			for (const group of cardGroups) {
@@ -128,7 +154,7 @@ function HomePage() {
 			}
 
 			return () => {
-				for (const split of [...titleSplits, ...paragraphSplits]) split.revert()
+				for (const split of [...titleSplits, ...paragraphSplits, ...fillSplits]) split.revert()
 			}
 		},
 		{ scope: containerRef },
@@ -223,7 +249,7 @@ function HomePage() {
 							</h1>
 						</div>
 
-						<div className="mt-6 flex flex-col gap-4">
+						<div data-animate="fill" className="mt-6 flex flex-col gap-4 text-foreground">
 							<div>
 								<h3 className="font-black text-2xl uppercase">Enfermagem / cuidadoras</h3>
 								<p className="font-black text-lg uppercase">
@@ -242,7 +268,7 @@ function HomePage() {
 			</section>
 
 			<section className="relative w-screen h-screen overflow-hidden">
-				<LightRays />
+				<LightRays className="rotate-180" />
 				<div className="px-4 max-w-300 mx-auto h-full flex items-center justify-center">
 					<div className="flex flex-col gap-4">
 						<div className="flex flex-col gap-4 max-w-150">
