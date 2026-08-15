@@ -25,6 +25,16 @@ export const Route = createFileRoute('/')({
 })
 
 function HomePage() {
+	// ScrollTrigger.defaults({
+	// 	markers: {
+	// 		startColor: 'lime',
+	// 		endColor: 'red',
+	// 		fontSize: '14px',
+	// 		fontWeight: 'bold',
+	// 		indent: 20,
+	// 	},
+	// })
+
 	const { theme } = useTheme()
 
 	const containerRef = useRef<HTMLDivElement>(null)
@@ -225,7 +235,7 @@ function HomePage() {
 			</section>
 
 			<section className="relative w-screen h-screen overflow-hidden">
-				<DotPattern className={cn('[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]')} />
+				<DotPattern className={cn('mask-[radial-gradient(300px_circle_at_center,white,transparent)]')} />
 				<div className="px-4 max-w-300 mx-auto h-full flex items-center ">
 					<div className="flex flex-col gap-4 items-center justify-center">
 						<div className="flex flex-col gap-4 max-w-150 items-center justify-center">
@@ -234,7 +244,7 @@ function HomePage() {
 							</h1>
 						</div>
 
-						<div data-animate="cards" className="flex gap-4 mt-6">
+						<div data-animate="cards" className="flex flex-col md:flex-row gap-4 mt-6">
 							<div className="border bg-card p-4 rounded-lg">
 								<UserRoundIcon className="mx-auto size-10" />
 								<h3 className="font-semibold text-lg text-center">Pacientes e responsáveis</h3>
@@ -272,16 +282,14 @@ function HomePage() {
 
 						<div data-animate="fill" className="mt-6 flex flex-col gap-4 text-foreground">
 							<div>
-								<h3 className="font-semibold text-2xl uppercase">Enfermagem / cuidadoras</h3>
-								<p className="text-lg uppercase">
+								<h3 className="font-semibold text-2xl">Enfermagem / cuidadoras</h3>
+								<p className="text-lg">
 									Agenda do dia, dose e horário — sem depender de planilha ou memória na troca de plantão.
 								</p>
 							</div>
 							<div>
-								<h3 className="font-semibold text-2xl uppercase">Coordenação / administração</h3>
-								<p className="text-lg uppercase">
-									Visão de pacientes, responsáveis e quem tem permissão para ver ou alterar.
-								</p>
+								<h3 className="font-semibold text-2xl">Coordenação / administração</h3>
+								<p className="text-lg">Visão de pacientes, responsáveis e quem tem permissão para ver ou alterar.</p>
 							</div>
 						</div>
 					</div>
