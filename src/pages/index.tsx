@@ -7,8 +7,12 @@ import { useLenis } from 'lenis/react'
 import { CalendarIcon, KeyRoundIcon, UserRoundIcon } from 'lucide-react'
 import { useRef } from 'react'
 
+import { useTheme } from '@/components/theme-provider'
 import { ThemeToggler } from '@/components/theme-toggler'
 import { Button } from '@/components/ui/button'
+
+import tableDark from '@/assets/table-dark.jpg'
+import tableLight from '@/assets/table-light.jpg'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText)
 
@@ -17,6 +21,8 @@ export const Route = createFileRoute('/')({
 })
 
 function HomePage() {
+	const { theme } = useTheme()
+
 	const containerRef = useRef<HTMLDivElement>(null)
 	const section1TitleRef = useRef<HTMLHeadingElement>(null)
 	const section2TitleRef = useRef<HTMLHeadingElement>(null)
@@ -32,6 +38,10 @@ function HomePage() {
 
 	useGSAP(
 		() => {
+			const container = containerRef.current
+
+			if (!container) return
+
 			const titles = [
 				section1TitleRef.current,
 				section2TitleRef.current,
@@ -40,7 +50,7 @@ function HomePage() {
 				section5TitleRef.current,
 			].filter((title) => title !== null)
 
-			const splits = titles.map((title) =>
+			const titleSplits = titles.map((title) =>
 				SplitText.create(title, {
 					type: 'chars',
 					smartWrap: true,
@@ -65,8 +75,56 @@ function HomePage() {
 				}),
 			)
 
+			const paragraphs = gsap.utils.toArray<HTMLParagraphElement>('[data-animate="copy"]', container)
+
+			const paragraphSplits = paragraphs.map((paragraph) =>
+				SplitText.create(paragraph, {
+					type: 'lines',
+					mask: 'lines',
+					autoSplit: true,
+					onSplit: (self) =>
+						gsap.fromTo(
+							self.lines,
+							{ yPercent: 110 },
+							{
+								yPercent: 0,
+								duration: 0.6,
+								ease: 'expo.out',
+								stagger: 0.08,
+								scrollTrigger: {
+									trigger: paragraph,
+									start: 'top 85%',
+									toggleActions: 'restart none restart reverse',
+								},
+							},
+						),
+				}),
+			)
+
+			const cardGroups = gsap.utils.toArray<HTMLDivElement>('[data-animate="cards"]', container)
+
+			for (const group of cardGroups) {
+				gsap.fromTo(
+					group.children,
+					{ opacity: 0, y: 40, scale: 0.96 },
+					{
+						opacity: 1,
+						y: 0,
+						scale: 1,
+						duration: 0.6,
+						ease: 'expo.out',
+						stagger: 0.12,
+						scrollTrigger: {
+							trigger: group,
+							start: 'top 85%',
+							toggleActions: 'restart none restart reverse',
+						},
+					},
+				)
+			}
+
 			return () => {
-				for (const split of splits) split.revert()
+				for (const split of [...titleSplits, ...paragraphSplits]) split.revert()
 			}
 		},
 		{ scope: containerRef },
@@ -85,7 +143,7 @@ function HomePage() {
 							<br />
 							Do paciente ao horário certo.
 						</h1>
-						<p className="text-center text-muted-foreground">
+						<p data-animate="copy" className="text-center text-muted-foreground">
 							Cadastre pacientes, vincule responsáveis, monte prescrições e agendas de administração — com painel para a
 							equipe e API para o seu app.
 						</p>
@@ -94,17 +152,22 @@ function HomePage() {
 			</section>
 
 			<section className="w-screen h-screen">
-				<div className="px-4 max-w-300 mx-auto h-full flex items-center">
+				<div className="px-4 max-w-300 mx-auto h-full flex flex-col md:flex-row items-center md:justify-between gap-4">
 					<div className="flex flex-col gap-4 max-w-150">
 						<h1 ref={section2TitleRef} className="font-bold text-2xl xl:text-4xl wrap-break-word">
 							Quando a medicação depende de memória e planilha, o risco sobe.
 						</h1>
-						<p className="text-muted-foreground">
+						<p data-animate="copy" className="text-muted-foreground">
 							Troca de plantão, horários perdidos, dose errada, “já administrei?” sem registro claro. Em instituições
 							com vários pacientes e vários profissionais, o controle manual não escala — e o custo do erro é alto.
 						</p>
 					</div>
-					<div className="bg-white rounde-lg h-100 w-130"></div>
+
+					<img
+						src={theme === 'dark' ? tableDark : tableLight}
+						alt="Table Preview"
+						className="rounded-lg max-w-130 w-full"
+					/>
 				</div>
 			</section>
 
@@ -117,7 +180,7 @@ function HomePage() {
 							</h1>
 						</div>
 
-						<div className="flex gap-4 mt-6">
+						<div data-animate="cards" className="flex gap-4 mt-6">
 							<div className="border bg-card p-4 rounded-lg">
 								<UserRoundIcon className="mx-auto size-10" />
 								<h3 className="font-semibold text-lg text-center">Pacientes e responsáveis</h3>
@@ -153,7 +216,7 @@ function HomePage() {
 							</h1>
 						</div>
 
-						<div className="flex gap-4">
+						<div data-animate="cards" className="flex gap-4">
 							<div className="border bg-card p-4 rounded-lg">
 								<h3 className="font-semibold text-lg">Pacientes e responsáveis</h3>
 								<p className="mt-2 text-sm">
@@ -184,7 +247,9 @@ function HomePage() {
 							<h1 ref={section5TitleRef} className="font-bold text-2xl xl:text-4xl wrap-break-word text-center">
 								Residencial Casablanca
 							</h1>
-							<p className="text-center">Clínica e creche para idosos</p>
+							<p data-animate="copy" className="text-center">
+								Clínica e creche para idosos
+							</p>
 							<Button variant="outline" className="group relative" onClick={scrollToTop}>
 								Voltar ao topo
 							</Button>
