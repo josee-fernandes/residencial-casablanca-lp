@@ -61,14 +61,15 @@ const enabledDebugMarkers: Record<string, boolean> = {
 }
 
 function cloneClippedGradient(source: HTMLElement, chars: Element[]) {
-	const { backgroundImage } = getComputedStyle(source)
 	const sourceTop = source.getBoundingClientRect().top
 	const sourceHeight = source.offsetHeight
 
 	for (const char of chars as HTMLElement[]) {
 		const offset = char.getBoundingClientRect().top - sourceTop
 
-		char.style.backgroundImage = backgroundImage
+		// Referenciar a variável em vez do gradiente já resolvido mantém as cores vivas: o
+		// navegador recalcula tudo quando o tema muda.
+		char.style.backgroundImage = 'var(--clipped-gradient)'
 		char.style.backgroundSize = `100% ${sourceHeight}px`
 		char.style.backgroundPosition = `0 ${-offset}px`
 		char.style.backgroundClip = 'text'
@@ -415,7 +416,7 @@ function HomePage() {
 			<section className="relative w-screen py-16 px-6 overflow-hidden ">
 				<div className="relative z-1 mt-32 md:mt-64 px-4 max-w-300 mx-auto flex items-center justify-center">
 					<div className="flex flex-col gap-4">
-						<div className="pointer-events-none bg-linear-to-t from-background to-20% to-foreground/80 bg-clip-text leading-none whitespace-pre-wrap text-transparent">
+						<div className="pointer-events-none clipped-gradient leading-none whitespace-pre-wrap">
 							<h1 ref={heroTitleRef} className="invisible font-bold text-2xl xl:text-6xl text-center">
 								Medicação sob controle.
 								<br />

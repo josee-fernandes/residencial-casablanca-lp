@@ -192,3 +192,15 @@
 body {
 	font-family: "Public Sans", sans-serif;
 }
+
+@utility clipped-gradient {
+	--clipped-gradient: linear-gradient(
+		to top,
+		var(--background) 0%,
+		color-mix(in oklab, var(--foreground) 80%, transparent) 20%
+	);
+
+	background-image: var(--clipped-gradient);
+	background-clip: text;
+	color: transparent;
+}
