@@ -520,7 +520,7 @@ function HomePage() {
 							<Button
 								data-animate="fade-up"
 								variant="outline"
-								className="invisible group relative"
+								className="invisible group relative w-max mx-auto"
 								onClick={scrollToTop}
 							>
 								Voltar ao topo
