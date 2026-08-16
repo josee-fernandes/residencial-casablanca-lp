@@ -60,9 +60,6 @@ const enabledDebugMarkers: Record<string, boolean> = {
 	'fade-up-1': false,
 }
 
-// Um `bg-clip-text` no wrapper para de recortar os chars no momento em que eles ganham
-// transform próprio no stagger, e o título fica invisível. Cada char passa a carregar a
-// fatia do degradê que lhe cabe, mantendo o mesmo visual do bloco inteiro.
 function cloneClippedGradient(source: HTMLElement, chars: Element[]) {
 	const { backgroundImage } = getComputedStyle(source)
 	const sourceTop = source.getBoundingClientRect().top
@@ -220,7 +217,6 @@ function HomePage() {
 												trigger: title,
 												start: titleStart,
 												toggleActions,
-												invalidateOnRefresh: true,
 												id,
 												markers: debugMarkers(id),
 											},
@@ -253,7 +249,6 @@ function HomePage() {
 												trigger: paragraph,
 												start: copyStart,
 												toggleActions,
-												invalidateOnRefresh: true,
 												id,
 												markers: debugMarkers(id),
 											},
@@ -286,7 +281,6 @@ function HomePage() {
 												start: isMobile ? 'top 85%' : 'top 75%',
 												end: () => `+=${Math.round(group.offsetHeight + window.innerHeight * (isMobile ? 0.4 : 0.55))}`,
 												scrub: 0.6,
-												invalidateOnRefresh: true,
 												id,
 												markers: debugMarkers(id),
 											},
@@ -318,7 +312,6 @@ function HomePage() {
 											trigger: card,
 											start: cardsStart,
 											toggleActions,
-											invalidateOnRefresh: true,
 											id,
 											markers: debugMarkers(id),
 										},
@@ -345,7 +338,6 @@ function HomePage() {
 									trigger: group,
 									start: cardsStart,
 									toggleActions,
-									invalidateOnRefresh: true,
 									id,
 									markers: debugMarkers(id),
 								},
@@ -369,7 +361,6 @@ function HomePage() {
 								// Lidar com imagem mais alta que o texto ao lado, então entra na viewport antes dele: o start mais tarde alinha as duas entradas.
 								start: isMobile ? 'top 90%' : 'top 72%',
 								toggleActions,
-								invalidateOnRefresh: true,
 								id,
 								markers: debugMarkers(id),
 							},
@@ -393,7 +384,6 @@ function HomePage() {
 									trigger: element,
 									start: fadeUpStart,
 									toggleActions,
-									invalidateOnRefresh: true,
 									id,
 									markers: debugMarkers(id),
 								},
