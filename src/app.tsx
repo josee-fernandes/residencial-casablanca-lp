@@ -1,5 +1,6 @@
 import { createRouter, RouterProvider } from '@tanstack/react-router'
-import { ReactLenis } from 'lenis/react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ReactLenis, useLenis } from 'lenis/react'
 
 import { ThemeProvider } from '@/components/theme-provider'
 import { routeTree } from '@/route-tree.gen'
@@ -12,13 +13,19 @@ declare module '@tanstack/react-router' {
 	}
 }
 
+function ScrollTriggerSync() {
+	useLenis(() => ScrollTrigger.update())
+
+	return null
+}
+
 export function App() {
 	return (
-		<>
-			<ReactLenis root />
-			<ThemeProvider defaultTheme="dark">
+		<ThemeProvider defaultTheme="dark">
+			<ReactLenis root>
+				<ScrollTriggerSync />
 				<RouterProvider router={router} />
-			</ThemeProvider>
-		</>
+			</ReactLenis>
+		</ThemeProvider>
 	)
 }
