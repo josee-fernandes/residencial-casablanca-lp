@@ -7,13 +7,16 @@ import { useLenis } from 'lenis/react'
 import { CalendarIcon, KeyRoundIcon, UserRoundIcon } from 'lucide-react'
 import { useRef } from 'react'
 
+import type { TMediaConditions } from '@/@types/gsap'
 import { useTheme } from '@/components/theme-provider'
 import { ThemeToggler } from '@/components/theme-toggler'
 import { BorderBeam } from '@/components/ui/border-beam'
 import { Button } from '@/components/ui/button'
 import { DotPattern } from '@/components/ui/dot-pattern'
 import { LightRays } from '@/components/ui/light-rays'
+import { MagicCard } from '@/components/ui/magic-card'
 import { cn } from '@/lib/utils'
+import { cloneClippedGradient, debugMarkers } from '@/utils/gsap'
 
 import heroDark from '@/assets/hero-dark.webp'
 import heroLight from '@/assets/hero-light.webp'
@@ -29,58 +32,6 @@ const MEDIA_CONDITIONS = {
 	isMobile: '(max-width: 767px)',
 	isDesktop: '(min-width: 768px)',
 	prefersReducedMotion: '(prefers-reduced-motion: reduce)',
-}
-
-type MediaConditions = {
-	isMobile: boolean
-	isDesktop: boolean
-	prefersReducedMotion: boolean
-}
-
-const enabledDebugMarkers: Record<string, boolean> = {
-	// Seção 2 — Quando a medicação depende de memória
-	'title-2': false,
-	'copy-1': false,
-	'slide-in-right-1': false,
-
-	// Seção 3 — Uma operação de medicação completa
-	'title-3': false,
-	'cards-1': false,
-	'cards-1-1': false,
-	'cards-1-2': false,
-	'cards-1-3': false,
-
-	// Seção 4 — Feito para quem administra medicação
-	'title-4': false,
-	'fill-1': false,
-
-	// Seção 5 — Residencial Casablanca
-	'title-5': false,
-	'copy-2': false,
-	'fade-up-1': false,
-}
-
-function cloneClippedGradient(source: HTMLElement, chars: Element[]) {
-	const sourceTop = source.getBoundingClientRect().top
-	const sourceHeight = source.offsetHeight
-
-	for (const char of chars as HTMLElement[]) {
-		const offset = char.getBoundingClientRect().top - sourceTop
-
-		// Referenciar a variável em vez do gradiente já resolvido mantém as cores vivas: o
-		// navegador recalcula tudo quando o tema muda.
-		char.style.backgroundImage = 'var(--clipped-gradient)'
-		char.style.backgroundSize = `100% ${sourceHeight}px`
-		char.style.backgroundPosition = `0 ${-offset}px`
-		char.style.backgroundClip = 'text'
-		char.style.setProperty('-webkit-background-clip', 'text')
-	}
-}
-
-function debugMarkers(id: string) {
-	if (!enabledDebugMarkers[id]) return false
-
-	return { startColor: 'lime', endColor: 'red', fontSize: '14px', fontWeight: 'bold', indent: 20 }
 }
 
 export const Route = createFileRoute('/')({
@@ -122,7 +73,7 @@ function HomePage() {
 				if (!isActive) return
 
 				mediaQueries.add(MEDIA_CONDITIONS, (context) => {
-					const { isMobile, prefersReducedMotion } = context.conditions as MediaConditions
+					const { isMobile, prefersReducedMotion } = context.conditions as TMediaConditions
 
 					const heroTitle = heroTitleRef.current
 
@@ -133,8 +84,6 @@ function HomePage() {
 						section5TitleRef.current,
 					].filter((title) => title !== null)
 
-					// Os alvos nascem com `invisible` no HTML para não aparecerem no estado final
-					// antes de existir animação; revelar aqui, junto da criação delas.
 					const hiddenElements = [
 						heroTitle,
 						...titles,
@@ -485,27 +434,46 @@ function HomePage() {
 						</div>
 
 						<div data-animate="cards" className="invisible flex flex-col md:flex-row gap-4 mt-6">
-							<div className="border bg-card p-4 rounded-lg">
+							<MagicCard
+								gradientColor="#00a9ed"
+								gradientFrom="#00a9ed"
+								gradientTo="#00a9ed"
+								gradientOpacity={0.2}
+								className="p-4 rounded-xl"
+							>
 								<UserRoundIcon className="mx-auto size-6 md:size-10" />
 								<h3 className="font-semibold text-lg text-center">Pacientes e responsáveis</h3>
 								<p className="mt-2 text-sm text-center">
 									Cadastro com documento, admissão e vínculo familiar/legal — quem cuida de quem fica explícito.
 								</p>
-							</div>
-							<div className="border bg-card p-4 rounded-lg">
+							</MagicCard>
+
+							<MagicCard
+								gradientColor="#00a9ed"
+								gradientFrom="#00a9ed"
+								gradientTo="#00a9ed"
+								gradientOpacity={0.2}
+								className="p-4 rounded-xl"
+							>
 								<CalendarIcon className="mx-auto size-6 md:size-10" />
 								<h3 className="font-semibold text-lg text-center">Prescrições e agendas</h3>
 								<p className="mt-2 text-sm text-center">
 									Medicamento, período de vigência, instruções e horários por dia da semana, com quantidade definida.
 								</p>
-							</div>
-							<div className="border bg-card p-4 rounded-lg">
+							</MagicCard>
+							<MagicCard
+								gradientColor="#00a9ed"
+								gradientFrom="#00a9ed"
+								gradientTo="#00a9ed"
+								gradientOpacity={0.2}
+								className="p-4 rounded-xl"
+							>
 								<KeyRoundIcon className="mx-auto size-6 md:size-10" />
 								<h3 className="mt-2 font-semibold text-lg text-center">Equipe com papéis e permissões</h3>
 								<p className="mt-2 text-sm text-center">
 									Enfermagem, farmácia e admin veem e fazem só o que cabe a cada perfil — no painel e na API.
 								</p>
-							</div>
+							</MagicCard>
 						</div>
 					</div>
 				</div>
